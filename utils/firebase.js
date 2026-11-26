@@ -1,14 +1,21 @@
 import admin from "firebase-admin";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const serviceAccountPath = path.resolve(
-  process.env.FIREBASE_SERVICE_ACCOUNT_PATH || "./serviceAccountKey.json"
-);
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+// Resolve path relative to this file (utils/firebase.js → project root)
+const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH
+  ? path.resolve(process.env.FIREBASE_SERVICE_ACCOUNT_PATH)          // absolute path from .env
+  : path.resolve(__dirname, "../serviceAccountKey.json");             // default: project root
+
+console.log("🔍 Firebase: Looking for service account at:", serviceAccountPath);
 let isFirebaseInitialized = false;
 
 if (fs.existsSync(serviceAccountPath)) {
