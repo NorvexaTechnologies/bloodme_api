@@ -32,9 +32,9 @@ const userSignup = async (req, res) => {
 
     const userType = organizationId ? "organization" : "individual";
 
-    // Generate OTP
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    const expiryTime = Date.now() + 10 * 60 * 1000; // 5 minutes expiry
+    // Dummy OTP for testing (replace with random generator for production)
+    const otp = 123456;
+    const expiryTime = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
     otpExpiryMap.set(email, expiryTime);
 
     const newUser = await User.create({
